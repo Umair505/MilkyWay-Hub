@@ -27,8 +27,7 @@ Users can **browse**, **add to cart**, **wishlist**,**search by category**,**cha
 - **Frontend:** HTML, CSS, Bootstrap, JavaScript  
 - **Backend:** Django, Python 🐍  
 - **Database:** MySQL 🗄️  
-- **Authentication:** Django Auth System 🔒  
-- **Deployment:** [Specify if applicable] 🌍  
+- **Authentication:** Django Auth System 🔒   
 
 ---
 
