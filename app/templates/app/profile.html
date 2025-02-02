@@ -1,0 +1,76 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block title %}Profile{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+    <div class="text-center my-4">
+        <h3 style="font-weight: bold; color: #007bff;">
+            Welcome, <span style="text-transform: capitalize;">{{ request.user }}</span>!
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 border-end" style="padding-right: 15px;">
+            <ul class="list-unstyled">
+                <li class="d-grid my-2">
+                    <a href="{% url 'profile' %}" class="btn btn-primary" style="padding: 10px; font-size: 16px;">
+                        Profile
+                    </a>
+                </li>
+                <li class="d-grid my-2">
+                    <a href="{% url 'address' %}" class="btn" style="padding: 10px; font-size: 16px;">
+                        Address
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-8 offset-sm-1">
+            <form action="" method="post" style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                {% csrf_token %}
+                <div class="row g-3">
+                    {% for fm in form %}
+                        <div class="col-12" style="margin-bottom: 15px;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 5px;">{{ fm.label }}</label>
+                            {% if fm.field.widget.input_type == 'select' %}
+                                <select name="{{ fm.html_name }}" class="form-control">
+                                    {% for option in fm.field.choices %}
+                                        <option value="{{ option.0 }}" {% if option.0 == fm.value %}selected{% endif %}>
+                                            {{ option.1 }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            {% else %}
+                                <input type="{{ fm.field.widget.input_type }}" name="{{ fm.html_name }}" class="form-control" value="{{ fm.value|default_if_none:'' }}">
+                            {% endif %}
+                            <small style="color: red;">{{ fm.errors|striptags }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-12 mt-3 text-start">
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px;">
+                        Submit
+                    </button>
+                </div>
+                {% if form.non_field_errors %}
+                    <div class="col-12">
+                        {% for error in form.non_field_errors %}
+                            <p class="alert alert-danger my-3" style="padding: 10px; border-radius: 5px;">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if messages %}
+                    <div class="col-12">
+                        {% for msg in messages %}
+                            <div class="alert alert-{{ msg.tags }}" role="alert" style="margin-top: 15px; padding: 10px; border-radius: 5px;">
+                                {{ msg }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock main-content %}
